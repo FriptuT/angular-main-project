@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { Recipe } from "./recipe.model";
@@ -6,23 +7,23 @@ import { Recipe } from "./recipe.model";
 @Injectable()
 
 export class RecipeService {
-    recipeSelected = new EventEmitter<Recipe>();
+    recipesChanged = new Subject<Recipe[]>();
 
 
    private recipes: Recipe[] = [
-        new Recipe('Tasty Schnitzel', 
-        'A super-tasty Schnitzel - just awesome!', 
-        'https://previews.123rf.com/images/foodandmore/foodandmore1502/foodandmore150200151/36578074-close-up-gourmet-tasty-crumbled-schnitzel-and-crispy-fries-with-lemon-tomato-and-lettuce-.jpg',
+        new Recipe('Salad Maison', 
+        'A super fresh salad - just awesome!', 
+        'https://www.cookingclassy.com/wp-content/uploads/2019/11/best-salad-7.jpg',
         [
-            new Ingredient("Meat", 1),
-            new Ingredient("French Fries", 20)
+            new Ingredient("salad", 1),
+            new Ingredient("tomatoes", 10)
         ]),
-        new Recipe('Big Fat Burger', 
-        'What else you need to say?', 
-        'https://1.bp.blogspot.com/-JhgDc-MCuJI/X3Mmx8xlxZI/AAAAAAAA-sw/8aBUdMfXHf4mw1mVK1NopftesDteb-LDQCLcBGAsYHQ/s960/Fatburger.jpg',
+        new Recipe('Spinach Salad', 
+        'Just delicious', 
+        'https://ifoodreal.com/wp-content/uploads/2018/12/FG-healthy-spinach-salad-recipe.jpg',
         [
-            new Ingredient("Buns", 2),
-            new Ingredient("Meat", 1)
+            new Ingredient("Eggs", 3),
+            new Ingredient("Spinach", 2)
         ]
         )
 
@@ -41,5 +42,22 @@ export class RecipeService {
 
       addIngredientsToShoppingList(ingredients: Ingredient[]){
         this.slService.addIngredients(ingredients);
+      }
+
+      addRecipe(recipe: Recipe){
+        this.recipes.push(recipe); 
+        this.recipesChanged.next(this.recipes.slice());
+      }
+
+      updateRecipe(index: number, newRecipe: Recipe){
+        this.recipes[index] = newRecipe;
+        this.recipesChanged.next(this.recipes.slice());
+
+      }
+
+
+      deleteRecipe(index: number){
+          this.recipes.splice(index,1);
+          this.recipesChanged.next(this.recipes.slice());
       }
 }
