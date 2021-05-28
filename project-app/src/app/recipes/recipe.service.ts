@@ -10,27 +10,34 @@ export class RecipeService {
     recipesChanged = new Subject<Recipe[]>();
 
 
-   private recipes: Recipe[] = [
-        new Recipe('Salad Maison', 
-        'A super fresh salad - just awesome!', 
-        'https://www.cookingclassy.com/wp-content/uploads/2019/11/best-salad-7.jpg',
-        [
-            new Ingredient("salad", 1),
-            new Ingredient("tomatoes", 10)
-        ]),
-        new Recipe('Spinach Salad', 
-        'Just delicious', 
-        'https://ifoodreal.com/wp-content/uploads/2018/12/FG-healthy-spinach-salad-recipe.jpg',
-        [
-            new Ingredient("Eggs", 3),
-            new Ingredient("Spinach", 2)
-        ]
-        )
+  //  private recipes: Recipe[] = [
+  //       new Recipe('Salad Maison', 
+  //       'A super fresh salad - just awesome!', 
+  //       'https://www.cookingclassy.com/wp-content/uploads/2019/11/best-salad-7.jpg',
+  //       [
+  //           new Ingredient("salad", 1),
+  //           new Ingredient("tomatoes", 10)
+  //       ]),
+  //       new Recipe('Spinach Salad', 
+  //       'Just delicious', 
+  //       'https://ifoodreal.com/wp-content/uploads/2018/12/FG-healthy-spinach-salad-recipe.jpg',
+  //       [
+  //           new Ingredient("Eggs", 3),
+  //           new Ingredient("Spinach", 2)
+  //       ]
+  //       )
 
-      ];
+  //     ];
+
+    private recipes: Recipe[] = [];
 
       constructor(private slService: ShoppingListService){ }
 
+
+      setRecipes(recipes: Recipe[]){
+        this.recipes = recipes;
+        this.recipesChanged.next(this.recipes.slice());
+      }
 
       getRecipes() {
           return this.recipes.slice();
